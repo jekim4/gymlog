@@ -1,0 +1,10 @@
+{
+  "name": "js-practice",
+  "private": true,
+  "description": "루트에서 gym-log 앱 실행용 스크립트 (의존성은 gym-log에서 설치)",
+  "scripts": {
+    "dev": "npm --prefix gym-log run dev",
+    "build": "npm --prefix gym-log run build",
+    "start": "npm --prefix gym-log run start"
+  }
+}

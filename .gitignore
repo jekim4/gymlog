@@ -1,0 +1,19 @@
+# IDE
+.cursor/
+
+# dependencies
+node_modules/
+
+# SQLite DB
+*.db
+*.db-shm
+*.db-wal
+
+# env
+.env
+.env.local
+.env*.local
+
+# OS
+.DS_Store
+Thumbs.db

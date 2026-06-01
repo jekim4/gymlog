@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GymLog Wireframe v1</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <h1>GymLog 와이어프레임 v1</h1>
+      <nav class="screen-tabs">
+        <button type="button" class="tab is-active" data-target="screen-list">세션 목록</button>
+        <button type="button" class="tab" data-target="screen-detail">세션 상세</button>
+        <button type="button" class="tab" data-target="screen-create">세션 생성</button>
+        <button type="button" class="tab" data-target="screen-exercise">종목 목록/등록</button>
+      </nav>
+    </header>
+
+    <section id="screen-list" class="screen is-active">
+      <div class="phone">
+        <div class="phone-header">
+          <strong>운동 세션 목록</strong>
+          <span>최신순</span>
+        </div>
+        <div id="session-list"></div>
+        <button type="button" id="btn-go-create" class="primary">+ 새 세션 만들기</button>
+      </div>
+    </section>
+
+    <section id="screen-detail" class="screen">
+      <div class="phone">
+        <div class="phone-header">
+          <strong>세션 상세</strong>
+          <span id="detail-date">2026-04-08</span>
+        </div>
+        <article class="card">
+          <div class="row between">
+            <strong id="detail-title">푸시 데이</strong>
+            <button class="link-btn">수정</button>
+          </div>
+          <p id="detail-memo">가슴 + 어깨 중심, 탑세트 후 백오프</p>
+        </article>
+        <div id="detail-workouts"></div>
+        <div class="row">
+          <button type="button" id="btn-add-workout" class="secondary">+ 종목 추가</button>
+          <button type="button" id="btn-add-set" class="secondary">+ 세트 추가</button>
+        </div>
+      </div>
+    </section>
+
+    <section id="screen-create" class="screen">
+      <div class="phone">
+        <div class="phone-header">
+          <strong>새 세션 만들기</strong>
+        </div>
+        <article class="card form">
+          <label>운동일</label>
+          <input id="create-date" type="date" />
+          <label>제목 (자동값, 수정 가능)</label>
+          <input id="create-title" type="text" />
+          <label>메모 (선택)</label>
+          <textarea id="create-memo" rows="3" placeholder="예: 푸시 데이, 가슴+어깨"></textarea>
+          <button type="button" id="btn-create-session" class="primary">저장</button>
+        </article>
+      </div>
+    </section>
+
+    <section id="screen-exercise" class="screen">
+      <div class="phone">
+        <div class="phone-header">
+          <strong>운동 종목 라이브러리</strong>
+          <button class="link-btn">+ 등록</button>
+        </div>
+        <div class="chips">
+          <span class="chip is-active">가슴</span>
+          <span class="chip">등</span>
+          <span class="chip">어깨</span>
+          <span class="chip">팔</span>
+          <span class="chip">하체</span>
+          <span class="chip">코어</span>
+        </div>
+        <div id="exercise-list"></div>
+        <article class="card form">
+          <h3>종목 등록</h3>
+          <input id="exercise-name" type="text" placeholder="종목 이름 (필수)" />
+          <input id="exercise-body-part" type="text" placeholder="부위 (필수)" />
+          <input id="exercise-brand" type="text" placeholder="브랜드 (선택)" />
+          <input id="exercise-start" type="text" placeholder="기본 저항 (선택, 예: 3.6kg)" />
+          <button type="button" id="btn-create-exercise" class="primary">저장</button>
+        </article>
+      </div>
+    </section>
+
+    <aside class="day18-lab card" aria-label="DAY18 이벤트 연습">
+      <h2 class="day18-title">DAY18 · 이벤트 연습</h2>
+      <p class="day18-row">
+        카운터:
+        <strong id="day18-count">0</strong>
+        <button type="button" id="day18-counter-btn" class="secondary">+1</button>
+      </p>
+      <label class="day18-label" for="day18-live-input">입력하면 아래에 실시간 반영</label>
+      <input
+        id="day18-live-input"
+        class="day18-input"
+        type="text"
+        placeholder="여기에 타이핑해 보세요"
+        autocomplete="off"
+      />
+      <p class="day18-mirror">
+        미리보기: <span id="day18-live-mirror">(비어 있음)</span>
+      </p>
+      <p class="day18-row">
+        <label class="day18-label-inline" for="day18-theme-select">change 이벤트 (선택 변경 시)</label>
+        <select id="day18-theme-select" class="day18-select">
+          <option value="dark">다크</option>
+          <option value="blue">블루 틴트</option>
+          <option value="violet">바이올렛 틴트</option>
+        </select>
+      </p>
+
+      <section id="day18-self-practice" class="day18-self">
+        <h3 class="day18-self-title">직접 추가해 보기 (JS는 app.js에 작성)</h3>
+        <details class="day18-self-brief">
+          <summary>과제 설명 펼치기</summary>
+          <ol>
+            <li>
+              <strong>초기화</strong>: <code>#day18-self-reset</code> 클릭 → 위쪽 카운터(
+              <code>day18Count</code> / <code>#day18-count</code>)를 <strong>0</strong>으로
+              맞추기.
+            </li>
+            <li>
+              <strong>감소</strong>: <code>#day18-self-minus</code> 클릭 → 카운터를
+              <strong>1 감소</strong>. 단, <strong>0 아래로는 내려가지 않게</strong>.
+            </li>
+            <li>
+              <strong>체크박스</strong>: <code>#day18-self-hide-hint</code>의
+              <code>change</code> 이벤트로 <code>#day18-self-hint</code>를 보였다 숨겼다
+              (<code>classList</code> 써도 되고, <code>style.display</code> 써도 됨).
+            </li>
+          </ol>
+        </details>
+
+        <div class="day18-self-row">
+          <button type="button" id="day18-self-reset" class="secondary">카운터 초기화</button>
+          <button type="button" id="day18-self-minus" class="secondary">−1</button>
+        </div>
+        <label class="day18-self-check">
+          <input id="day18-self-hide-hint" type="checkbox" />
+          힌트 문구 숨기기
+        </label>
+        <p id="day18-self-hint" class="day18-self-hint">
+          힌트: <code>addEventListener</code>는 파일 아래쪽
+          <code>// DAY18 직접 해보기</code> 주석 근처에 이어서 쓰면,
+          같은 함수 안이라 <code>day18Count</code> 변수를 그대로 쓸 수 있어요.
+        </p>
+      </section>
+    </aside>
+
+    <aside class="day19-lab card" aria-label="DAY19 �� 연습">
+      <h2 class="day18-title">DAY19 · ��과 유���성 검사</h2>
+      <p class="hint">
+        <code>submit</�트에서 <code>preventDefault()</code>로 기본 제출(��이지        새로고��)을 ��고, 값 검사 후 통과하면 <code>console.log</code>로 확인합니다.
+      </p>
+      <form id="day19-signup-form" class="day19-form" novalidate>
+        <label class="day18-label" for="day19-name">이름 (��수)</label>
+        <input id="day19-name" name="name" class="day18-input" type="text" autocomplete="name" />
+        <label class="day18-label" for="day19-email">이메일 (��수)</label>
+        <input id="day19-email" name="email" class="day18-input" type="email" autocomplete="email" />
+        <p id="day19-form-error" class="day19-error is-hidden" role="alert"></p>
+        <p id="day19-form-success" class="day19-success is-hidden"></p>
+        <button type="submit" class="primary">가입 제출 (연습)</button>
+      </form>
+    </aside>
+  </main>
+
+  <script src="app.js"></script>
+</body>
+</html>

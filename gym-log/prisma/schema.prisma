@@ -1,0 +1,83 @@
+// GymLog MVP — Prisma schema (SQLite)
+// 상위 문서: ../DATA_MODEL_TEMPLATE.md, ../FUNCTIONAL_REQUIREMENTS.md
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// 표시: 가슴 / 등 / 하체 / 어깨 / 팔 / 복근 / 기타
+enum BodyPart {
+  CHEST
+  BACK
+  LOWER_BODY
+  SHOULDER
+  ARM
+  ABS
+  OTHER
+}
+
+model Session {
+  id          String   @id @default(cuid())
+  workoutDate DateTime
+  title       String
+  memo        String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  sessionExercises SessionExercise[]
+
+  @@index([workoutDate])
+}
+
+model Exercise {
+  id                  String    @id @default(cuid())
+  name                String
+  bodyPart            BodyPart
+  brand               String?
+  startResistanceKg   Float?
+  startResistanceNote String?
+  isSystemDefault     Boolean   @default(false)
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+
+  sessionExercises SessionExercise[]
+
+  @@index([bodyPart])
+}
+
+model SessionExercise {
+  id                        String    @id @default(cuid())
+  sessionId                 String
+  session                   Session   @relation(fields: [sessionId], references: [id], onDelete: Cascade)
+  exerciseId                String?
+  exercise                  Exercise? @relation(fields: [exerciseId], references: [id], onDelete: SetNull)
+  exerciseNameSnapshot      String
+  brandSnapshot             String?
+  startResistanceKgSnapshot Float?
+  displayOrder              Int       @default(0)
+  createdAt                 DateTime  @default(now())
+  updatedAt                 DateTime  @updatedAt
+
+  sets SetEntry[]
+
+  @@index([sessionId])
+  @@index([exerciseId])
+}
+
+model SetEntry {
+  id                String          @id @default(cuid())
+  sessionExerciseId String
+  sessionExercise   SessionExercise @relation(fields: [sessionExerciseId], references: [id], onDelete: Cascade)
+  setOrder          Int
+  plateWeightKg     Float
+  reps              Int
+  createdAt         DateTime        @default(now())
+  updatedAt         DateTime        @updatedAt
+
+  @@index([sessionExerciseId])
+}

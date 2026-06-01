@@ -1,0 +1,321 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: #0d0f14;
+  color: #edf0f7;
+}
+
+.app {
+  max-width: 980px;
+  margin: 20px auto;
+  padding: 0 16px 28px;
+}
+
+.app-header h1 {
+  margin: 0 0 12px;
+  font-size: 22px;
+}
+
+.screen-tabs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tab {
+  border: 1px solid #3a445f;
+  background: #1c2335;
+  color: #dbe3ff;
+  border-radius: 10px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.tab.is-active {
+  background: #2d4dcc;
+  border-color: #5472eb;
+}
+
+.screen {
+  display: none;
+}
+
+.screen.is-active {
+  display: block;
+}
+
+.phone {
+  max-width: 420px;
+  margin: 0 auto;
+  border: 1px solid #2c354b;
+  border-radius: 16px;
+  background: #131a29;
+  padding: 14px;
+}
+
+.phone-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+  color: #c7d0ea;
+}
+
+.card {
+  background: #1a2234;
+  border: 1px solid #2e3a56;
+  border-radius: 12px;
+  padding: 12px;
+  margin-bottom: 10px;
+}
+
+.session-card {
+  cursor: pointer;
+}
+
+.card h3 {
+  margin: 0 0 8px;
+  font-size: 15px;
+}
+
+.card p {
+  margin: 4px 0;
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.row.between {
+  justify-content: space-between;
+}
+
+.hint {
+  font-size: 12px;
+  color: #9aa8ce;
+}
+
+ul {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+li {
+  margin: 4px 0;
+}
+
+button {
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.primary,
+.secondary {
+  width: 100%;
+  padding: 10px 12px;
+  font-weight: 600;
+}
+
+.primary {
+  background: #4f7cff;
+  color: #fff;
+}
+
+.secondary {
+  background: #2b3550;
+  color: #dce5ff;
+}
+
+.link-btn {
+  background: transparent;
+  color: #9cb5ff;
+  padding: 0;
+}
+
+.detail-btn {
+  margin-top: 6px;
+}
+
+.form input,
+.form textarea {
+  width: 100%;
+  background: #0f1423;
+  color: #edf0f7;
+  border: 1px solid #303d5d;
+  border-radius: 10px;
+  padding: 9px 10px;
+  margin: 6px 0 10px;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.chip {
+  font-size: 12px;
+  padding: 5px 10px;
+  border-radius: 999px;
+  background: #232d45;
+  border: 1px solid #37486d;
+  color: #c7d8ff;
+}
+
+.chip.is-active {
+  background: #334fbb;
+  border-color: #4d69d7;
+}
+
+.day18-lab {
+  margin-top: 24px;
+}
+
+.day18-title {
+  margin: 0 0 10px;
+  font-size: 16px;
+}
+
+.day18-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+  margin: 0 0 10px;
+}
+
+.day18-label {
+  display: block;
+  font-size: 13px;
+  color: #c7d0ea;
+  margin-bottom: 4px;
+}
+
+.day18-label-inline {
+  font-size: 13px;
+  color: #c7d0ea;
+}
+
+.day18-input {
+  width: 100%;
+  background: #0f1423;
+  color: #edf0f7;
+  border: 1px solid #303d5d;
+  border-radius: 10px;
+  padding: 9px 10px;
+  margin-bottom: 6px;
+}
+
+.day18-mirror {
+  font-size: 13px;
+  color: #c7d0ea;
+  margin: 0 0 12px;
+}
+
+.day18-select {
+  min-width: 160px;
+  background: #0f1423;
+  color: #edf0f7;
+  border: 1px solid #303d5d;
+  border-radius: 10px;
+  padding: 8px 10px;
+}
+
+body.day18-theme-blue {
+  background: radial-gradient(circle at 18% 18%, #15254a 0%, #0d0f14 52%);
+}
+
+body.day18-theme-violet {
+  background: radial-gradient(circle at 82% 12%, #2a1548 0%, #0d0f14 52%);
+}
+
+.day18-self {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid #2e3a56;
+}
+
+.day18-self-title {
+  margin: 0 0 8px;
+  font-size: 14px;
+  color: #dbe3ff;
+}
+
+.day18-self-brief {
+  font-size: 13px;
+  color: #c7d0ea;
+  margin-bottom: 10px;
+}
+
+.day18-self-brief ol {
+  margin: 8px 0 0;
+  padding-left: 18px;
+}
+
+.day18-self-brief li {
+  margin-bottom: 6px;
+}
+
+.day18-self-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.day18-self-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: #c7d0ea;
+  margin-bottom: 8px;
+  cursor: pointer;
+}
+
+.day18-self-hint {
+  font-size: 12px;
+  color: #9aa7c7;
+  margin: 0;
+  line-height: 1.5;
+}
+
+.day18-self-hint code {
+  font-size: 11px;
+}
+
+/* classList toggle: add/remove "is-hidden" to hide/show */
+.is-hidden {
+  display: none !important;
+}
+
+.day19-lab {
+  margin-top: 16px;
+}
+
+.day19-form {
+  margin-top: 8px;
+}
+
+.day19-error {
+  color: #ffb4b4;
+  font-size: 13px;
+  margin: 8px 0;
+}
+
+.day19-success {
+  color: #9de89d;
+  font-size: 13px;
+  margin: 8px 0;
+}

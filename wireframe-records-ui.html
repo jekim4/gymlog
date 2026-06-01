@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>GymLog — 와이어: 운동 기록(캘린더 + 일별)</title>
+    <style>
+      :root {
+        --ink: #1a1a1a;
+        --line: #c9c9c9;
+        --paper: #f6f6f6;
+        --frame: #fff;
+        --blue: #2563eb;
+        --orange: #fb923c;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        padding: 1.5rem 1rem 3rem;
+        font-family: system-ui, "Segoe UI", sans-serif;
+        background: #dcdcdc;
+        color: var(--ink);
+      }
+      header {
+        max-width: 22rem;
+        margin: 0 auto 1.25rem;
+      }
+      h1 {
+        margin: 0 0 0.35rem;
+        font-size: 1.05rem;
+        font-weight: 800;
+      }
+      .lead {
+        margin: 0;
+        font-size: 0.78rem;
+        color: #444;
+        line-height: 1.5;
+      }
+      .phone-wrap {
+        max-width: 17.5rem;
+        margin: 0 auto;
+      }
+      .wf-phone {
+        border: 3px solid var(--ink);
+        border-radius: 1.35rem;
+        background: var(--frame);
+        padding: 0.5rem 0.55rem 0.65rem;
+        box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.1);
+      }
+      .wf-notch {
+        height: 5px;
+        width: 32%;
+        margin: 0 auto 0.45rem;
+        background: var(--ink);
+        border-radius: 99px;
+        opacity: 0.28;
+      }
+      .cal-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0.15rem 0.1rem 0.5rem;
+      }
+      .cal-back {
+        width: 1.75rem;
+        height: 1.75rem;
+        border: 2px solid var(--ink);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.85rem;
+        font-weight: 800;
+        background: var(--paper);
+      }
+      .cal-title {
+        font-size: 0.82rem;
+        font-weight: 700;
+      }
+      .cal-spacer {
+        width: 1.75rem;
+      }
+      .cal-week {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        text-align: center;
+        font-size: 0.58rem;
+        font-weight: 700;
+        color: #555;
+        padding: 0.2rem 0 0.15rem;
+      }
+      .cal-grid {
+        display: grid;
+        grid-template-columns: repeat(7, 1fr);
+        gap: 0.15rem 0;
+        padding: 0.15rem 0 0.55rem;
+        text-align: center;
+      }
+      .cal-cell {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        min-height: 2.15rem;
+        padding-top: 0.1rem;
+      }
+      .cal-cell.empty .cal-num {
+        visibility: hidden;
+      }
+      .cal-num {
+        position: relative;
+        width: 1.65rem;
+        height: 1.65rem;
+        line-height: 1.65rem;
+        font-size: 0.68rem;
+        font-weight: 600;
+        border-radius: 50%;
+      }
+      .cal-cell.selected .cal-num {
+        background: var(--blue);
+        color: #fff;
+      }
+      .cal-dot {
+        width: 0.45rem;
+        height: 0.45rem;
+        margin-top: 0.12rem;
+        border-radius: 2px;
+        background: transparent;
+      }
+      .cal-cell.has-log .cal-dot {
+        background: var(--orange);
+      }
+      .panel {
+        margin-top: 0.35rem;
+        border: 2px solid var(--ink);
+        border-radius: 0.75rem;
+        padding: 0.55rem 0.5rem 0.65rem;
+        background: var(--paper);
+      }
+      .panel-head {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 0.5rem;
+      }
+      .panel-date {
+        font-size: 0.82rem;
+        font-weight: 800;
+        letter-spacing: 0.02em;
+      }
+      .panel-icons {
+        display: flex;
+        gap: 0.25rem;
+      }
+      .ico {
+        width: 1.35rem;
+        height: 1.35rem;
+        border: 2px solid var(--ink);
+        border-radius: 50%;
+        background: #fff;
+        font-size: 0.55rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #666;
+      }
+      .ex-row {
+        display: flex;
+        align-items: center;
+        gap: 0.45rem;
+        margin-top: 0.65rem;
+        padding-top: 0.55rem;
+        border-top: 1px dashed #999;
+      }
+      .ex-main {
+        flex: 1;
+        min-width: 0;
+      }
+      .ex-name {
+        font-size: 0.72rem;
+        font-weight: 800;
+        line-height: 1.2;
+      }
+      .ex-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.15rem;
+        margin-top: 0.2rem;
+      }
+      .tag {
+        font-size: 0.45rem;
+        padding: 0.1rem 0.25rem;
+        border: 1px solid #666;
+        border-radius: 2px;
+        background: #fff;
+        font-weight: 600;
+        color: #333;
+      }
+      .ex-meta {
+        margin-top: 0.2rem;
+        font-size: 0.62rem;
+        color: #444;
+        font-weight: 500;
+      }
+      .chk {
+        flex-shrink: 0;
+        width: 1.15rem;
+        height: 1.15rem;
+        border: 2px solid var(--blue);
+        border-radius: 3px;
+        background: var(--blue);
+        color: #fff;
+        font-size: 0.55rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+      }
+      .cta {
+        margin-top: 0.75rem;
+        width: 100%;
+        padding: 0.65rem 0.5rem;
+        border: none;
+        border-radius: 0.65rem;
+        background: var(--blue);
+        color: #fff;
+        font-size: 0.68rem;
+        font-weight: 800;
+        letter-spacing: -0.02em;
+      }
+      .note {
+        max-width: 22rem;
+        margin: 1.25rem auto 0;
+        font-size: 0.72rem;
+        color: #333;
+        line-height: 1.55;
+        padding: 0.65rem 0.75rem;
+        background: #eee;
+        border: 1px solid #bbb;
+        border-radius: 0.5rem;
+      }
+      .note code {
+        font-size: 0.68rem;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>와이어: 운동 기록 모아보기</h1>
+      <p class="lead">
+        참고 UI를 <strong>저해상 와이어</strong>로 옮김. 파랑 = 선택일·체크·CTA, 주황 = 해당
+        날짜에 기록 있음. 부위 태그는 종목별 표시 예시(가슴/등/하체/어깨/팔/복근/기타).
+      </p>
+    </header>
+
+    <div class="phone-wrap">
+      <div class="wf-phone">
+        <div class="wf-notch"></div>
+
+        <!-- 캘린더 상단 -->
+        <div class="cal-head">
+          <div class="cal-back" aria-hidden="true">‹</div>
+          <div class="cal-title">2023년 4월</div>
+          <div class="cal-spacer"></div>
+        </div>
+        <div class="cal-week" aria-hidden="true">
+          <span>일</span><span>월</span><span>화</span><span>수</span
+          ><span>목</span><span>금</span><span>토</span>
+        </div>
+        <div class="cal-grid" role="presentation">
+          <!-- 2023년 4월: 1일=토 → 앞 6칸 비움 -->
+          <span class="cal-cell empty"><span class="cal-num">·</span><span class="cal-dot"></span></span>
+          <span class="cal-cell empty"><span class="cal-num">·</span><span class="cal-dot"></span></span>
+          <span class="cal-cell empty"><span class="cal-num">·</span><span class="cal-dot"></span></span>
+          <span class="cal-cell empty"><span class="cal-num">·</span><span class="cal-dot"></span></span>
+          <span class="cal-cell empty"><span class="cal-num">·</span><span class="cal-dot"></span></span>
+          <span class="cal-cell empty"><span class="cal-num">·</span><span class="cal-dot"></span></span>
+          <span class="cal-cell has-log"><span class="cal-num">1</span><span class="cal-dot"></span></span>
+          <span class="cal-cell has-log"><span class="cal-num">2</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">3</span><span class="cal-dot"></span></span>
+          <span class="cal-cell has-log"><span class="cal-num">4</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">5</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">6</span><span class="cal-dot"></span></span>
+          <span class="cal-cell has-log"><span class="cal-num">7</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">8</span><span class="cal-dot"></span></span>
+          <span class="cal-cell has-log"><span class="cal-num">9</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">10</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">11</span><span class="cal-dot"></span></span>
+          <span class="cal-cell has-log"><span class="cal-num">12</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">13</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">14</span><span class="cal-dot"></span></span>
+          <span class="cal-cell has-log"><span class="cal-num">15</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">16</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">17</span><span class="cal-dot"></span></span>
+          <span class="cal-cell has-log"><span class="cal-num">18</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">19</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">20</span><span class="cal-dot"></span></span>
+          <span class="cal-cell has-log"><span class="cal-num">21</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">22</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">23</span><span class="cal-dot"></span></span>
+          <span class="cal-cell has-log"><span class="cal-num">24</span><span class="cal-dot"></span></span>
+          <span class="cal-cell selected has-log"
+            ><span class="cal-num">25</span><span class="cal-dot"></span></span
+          >
+          <span class="cal-cell"><span class="cal-num">26</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">27</span><span class="cal-dot"></span></span>
+          <span class="cal-cell has-log"><span class="cal-num">28</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">29</span><span class="cal-dot"></span></span>
+          <span class="cal-cell"><span class="cal-num">30</span><span class="cal-dot"></span></span>
+          <span class="cal-cell empty"><span class="cal-num">·</span><span class="cal-dot"></span></span>
+          <span class="cal-cell empty"><span class="cal-num">·</span><span class="cal-dot"></span></span>
+          <span class="cal-cell empty"><span class="cal-num">·</span><span class="cal-dot"></span></span>
+          <span class="cal-cell empty"><span class="cal-num">·</span><span class="cal-dot"></span></span>
+          <span class="cal-cell empty"><span class="cal-num">·</span><span class="cal-dot"></span></span>
+          <span class="cal-cell empty"><span class="cal-num">·</span><span class="cal-dot"></span></span>
+        </div>
+
+        <!-- 일별 패널 -->
+        <div class="panel">
+          <div class="panel-head">
+            <div class="panel-date">2023.04.25.</div>
+            <div class="panel-icons" aria-label="상단 액션(자리만)">
+              <span class="ico" title="복사">◇</span>
+              <span class="ico" title="분류">□</span>
+              <span class="ico" title="삭제">×</span>
+            </div>
+          </div>
+          <div class="ex-row">
+            <div class="ex-main">
+              <div class="ex-name">덤벨 레터럴 레이즈</div>
+              <div class="ex-tags" aria-label="부위(와이어 예시)">
+                <span class="tag">어깨</span>
+              </div>
+              <div class="ex-meta">5세트 / 100.0kg / 30회</div>
+            </div>
+            <div class="chk" aria-label="완료">✓</div>
+          </div>
+        </div>
+
+        <button type="button" class="cta" disabled style="opacity: 0.85">
+          오운완 피드 올리기
+        </button>
+      </div>
+    </div>
+
+    <p class="note">
+      실제 구현 참고: <code>gym-log/src/app/records/</code>. 이 HTML은 기획·발표용
+      정적 와이어이며 동작하지 않습니다. CTA는 와이어상 비활성 표시만 해 두었습니다.
+    </p>
+  </body>
+</html>
