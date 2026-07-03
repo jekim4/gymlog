@@ -1,6 +1,12 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { deleteSessionExercise, updateSessionInfo } from "./actions";
+import {
+  addSet,
+  deleteSet,
+  deleteSessionExercise,
+  updateSet,
+  updateSessionInfo,
+} from "./actions";
 import { DeleteSessionButton } from "@/components/session/delete-session-button";
 import { formatHeaderDate, seoulDateKeyFromUtc } from "@/lib/kst";
 import { prisma } from "@/lib/prisma";
@@ -95,6 +101,7 @@ export default async function SessionDetailPage({ params }: PageProps) {
                 se.id,
                 session.id,
               );
+              const addSetAction = addSet.bind(null, se.id, session.id);
               const totalVolume = se.sets.reduce(
                 (sum, s) => sum + s.plateWeightKg * s.reps,
                 0,
@@ -126,30 +133,110 @@ export default async function SessionDetailPage({ params }: PageProps) {
                     </form>
                   </div>
 
-                  {se.sets.length === 0 ? (
-                    <p className="mt-2 text-sm text-slate-400">세트 없음</p>
-                  ) : (
-                    <ul className="mt-2 divide-y divide-slate-100 text-sm">
-                      {se.sets.map((set) => (
-                        <li
-                          key={set.id}
-                          className="flex items-center justify-between py-1.5"
-                        >
-                          <span className="text-slate-500">
-                            {set.setOrder}세트
-                          </span>
-                          <span className="text-slate-800">
-                            {set.plateWeightKg}kg × {set.reps}회
-                          </span>
-                        </li>
-                      ))}
-                    </ul>
-                  )}
-                  {se.sets.length > 0 ? (
-                    <p className="mt-2 text-xs text-slate-400">
-                      총 볼륨 {totalVolume.toFixed(1)}kg
-                    </p>
-                  ) : null}
+                  <div className="mt-3">
+                    {se.sets.length > 0 ? (
+                      <>
+                        <div className="mb-1 flex items-center gap-2 text-xs font-medium text-slate-400">
+                          <span className="w-5 text-center">#</span>
+                          <span className="w-20 text-center">무게(kg)</span>
+                          <span className="w-14 text-center">횟수</span>
+                        </div>
+                        {se.sets.map((set) => {
+                          const updateSetAction = updateSet.bind(
+                            null,
+                            set.id,
+                            session.id,
+                          );
+                          const deleteSetAction = deleteSet.bind(
+                            null,
+                            set.id,
+                            session.id,
+                          );
+                          return (
+                            <div
+                              key={set.id}
+                              className="flex items-center gap-2 border-t border-slate-100 py-1.5"
+                            >
+                              <span className="w-5 text-center text-xs text-slate-400">
+                                {set.setOrder}
+                              </span>
+                              <form
+                                action={updateSetAction}
+                                className="flex flex-1 items-center gap-2"
+                              >
+                                <input
+                                  name="plateWeightKg"
+                                  type="number"
+                                  step="0.5"
+                                  min="0"
+                                  defaultValue={set.plateWeightKg}
+                                  required
+                                  className="w-20 rounded border border-slate-300 px-2 py-1 text-center text-sm"
+                                />
+                                <input
+                                  name="reps"
+                                  type="number"
+                                  min="1"
+                                  defaultValue={set.reps}
+                                  required
+                                  className="w-14 rounded border border-slate-300 px-2 py-1 text-center text-sm"
+                                />
+                                <button
+                                  type="submit"
+                                  className="text-xs font-medium text-blue-600 hover:underline"
+                                >
+                                  저장
+                                </button>
+                              </form>
+                              <form action={deleteSetAction}>
+                                <button
+                                  type="submit"
+                                  className="text-xs font-medium text-red-500 hover:underline"
+                                >
+                                  삭제
+                                </button>
+                              </form>
+                            </div>
+                          );
+                        })}
+                        <p className="mt-1.5 text-right text-xs text-slate-400">
+                          총 볼륨 {totalVolume.toFixed(1)}kg
+                        </p>
+                      </>
+                    ) : null}
+
+                    <form
+                      action={addSetAction}
+                      className="mt-2 flex items-center gap-2 border-t border-slate-100 pt-2"
+                    >
+                      <span className="w-5 text-center text-xs text-slate-400">
+                        {se.sets.length + 1}
+                      </span>
+                      <input
+                        name="plateWeightKg"
+                        type="number"
+                        step="0.5"
+                        min="0"
+                        placeholder="kg"
+                        required
+                        className="w-20 rounded border border-slate-300 px-2 py-1 text-center text-sm"
+                      />
+                      <input
+                        name="reps"
+                        type="number"
+                        min="1"
+                        placeholder="회"
+                        required
+                        className="w-14 rounded border border-slate-300 px-2 py-1 text-center text-sm"
+                      />
+                      <button
+                        type="submit"
+                        className="text-xs font-semibold text-blue-700 hover:underline"
+                      >
+                        + 추가
+                      </button>
+                    </form>
+                  </div>
                 </div>
               );
             })
