@@ -5,7 +5,6 @@ export type DayExerciseRow = {
   sessionTitle: string;
   name: string;
   setCount: number;
-  volumeKg: number;
   totalReps: number;
   done: boolean;
 };
@@ -45,8 +44,7 @@ export function DayDetail({ year, month, day, rows }: DayDetailProps) {
                   {row.sessionTitle}
                 </p>
                 <p className="mt-1 text-sm text-slate-600">
-                  {row.setCount}세트 / {row.volumeKg.toFixed(1)}kg /{" "}
-                  {row.totalReps}회
+                  {row.setCount}세트 · {row.totalReps}회
                 </p>
               </div>
               <div

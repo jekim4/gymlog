@@ -51,10 +51,8 @@ export default async function MainPage({
   for (const session of daySessions) {
     for (const se of session.sessionExercises) {
       const setCount = se.sets.length;
-      let volumeKg = 0;
       let totalReps = 0;
       for (const st of se.sets) {
-        volumeKg += st.plateWeightKg * st.reps;
         totalReps += st.reps;
       }
       rows.push({
@@ -62,7 +60,6 @@ export default async function MainPage({
         sessionTitle: session.title,
         name: se.exerciseNameSnapshot,
         setCount,
-        volumeKg,
         totalReps,
         done: setCount > 0,
       });
