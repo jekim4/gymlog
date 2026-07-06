@@ -15,13 +15,7 @@ export function MainActions({ addExerciseAction }: MainActionsProps) {
         </button>
       </form>
 
-      <button
-        type="button"
-        disabled
-        className="w-full rounded-xl border border-slate-200 bg-white py-3.5 text-sm font-semibold text-slate-400 shadow-sm"
-      >
-        ✓ 오늘의 운동 완료
-      </button>
+
     </section>
   );
 }

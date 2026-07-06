@@ -251,11 +251,17 @@ export default async function SessionDetailPage({ params }: PageProps) {
         </section>
 
         <section className="mt-6 space-y-2">
+          <Link
+            href={backHref}
+            className="block w-full rounded-xl bg-blue-600 py-3.5 text-center text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
+          >
+            ✓ 오늘의 운동 완료
+          </Link>
           <DeleteSessionButton sessionId={session.id} y={y} m={m} d={d} />
           <p className="text-center">
             <Link
               href={backHref}
-              className="text-sm font-medium text-blue-600 hover:underline"
+              className="text-sm font-medium text-slate-500 hover:underline"
             >
               ← 메인으로
             </Link>

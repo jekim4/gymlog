@@ -17,32 +17,14 @@ type DayDetailProps = {
   rows: DayExerciseRow[];
 };
 
-function IconRow() {
-  return (
-    <div className="flex gap-2" aria-hidden>
-      {["○", "□", "×"].map((sym, i) => (
-        <span
-          key={i}
-          className="flex h-8 w-8 items-center justify-center rounded-full border border-slate-200 bg-slate-50 text-xs text-slate-400"
-        >
-          {sym}
-        </span>
-      ))}
-    </div>
-  );
-}
-
 export function DayDetail({ year, month, day, rows }: DayDetailProps) {
   const header = formatHeaderDate(year, month, day);
 
   return (
     <section className="mt-4 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/80">
-      <div className="flex items-start justify-between gap-3">
-        <h2 className="text-lg font-semibold tracking-tight text-slate-900">
-          {header}
-        </h2>
-        <IconRow />
-      </div>
+      <h2 className="text-lg font-semibold tracking-tight text-slate-900">
+        {header}
+      </h2>
 
       <ul className="mt-4 divide-y divide-slate-100">
         {rows.length === 0 ? (
