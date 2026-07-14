@@ -1,16 +1,18 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useMemo, useState, useTransition } from "react";
 import { BODY_PART_LABEL, BODY_PART_ORDER } from "@/lib/body-part";
 import type { BodyPart } from "@/generated/prisma/enums";
-import { addExerciseToSession, createAndAddExercise } from "./actions";
+import { addExerciseToSession, createAndAddExercise, deleteExercise } from "./actions";
 
 type Exercise = {
   id: string;
   name: string;
   bodyPart: BodyPart;
   brand: string | null;
+  isSystemDefault: boolean;
 };
 
 type Props = {
@@ -38,6 +40,7 @@ export function ExerciseSelectClient({
   const [newName, setNewName] = useState("");
   const [newBodyPart, setNewBodyPart] = useState<BodyPart>(initialTab);
   const [isPending, startTransition] = useTransition();
+  const router = useRouter();
 
   const isSearching = search.trim().length > 0;
 
@@ -48,6 +51,15 @@ export function ExerciseSelectClient({
     }
     return exercises.filter((ex) => ex.bodyPart === tab);
   }, [exercises, search, tab, isSearching]);
+
+  function handleDelete(ex: Exercise) {
+    const warning = ex.isSystemDefault ? "기본 제공 종목입니다. " : "";
+    if (!window.confirm(`${warning}"${ex.name}"을(를) 삭제할까요?`)) return;
+    startTransition(async () => {
+      await deleteExercise(ex.id);
+      router.refresh();
+    });
+  }
 
   function openAddForm() {
     setNewName(search.trim());
@@ -125,16 +137,27 @@ export function ExerciseSelectClient({
                       <p className="text-xs text-slate-500">{ex.brand}</p>
                     ) : null}
                   </div>
-                  {addAction ? (
-                    <form action={addAction}>
-                      <button
-                        type="submit"
-                        className="ml-3 flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-blue-600 text-lg font-bold text-white transition hover:bg-blue-700"
-                      >
-                        +
-                      </button>
-                    </form>
-                  ) : null}
+                  <div className="ml-3 flex shrink-0 items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(ex)}
+                      disabled={isPending}
+                      className="flex h-8 w-8 items-center justify-center rounded-full text-slate-400 transition hover:bg-red-50 hover:text-red-500 disabled:opacity-40"
+                      aria-label="종목 삭제"
+                    >
+                      ×
+                    </button>
+                    {addAction ? (
+                      <form action={addAction}>
+                        <button
+                          type="submit"
+                          className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-600 text-lg font-bold text-white transition hover:bg-blue-700"
+                        >
+                          +
+                        </button>
+                      </form>
+                    ) : null}
+                  </div>
                 </li>
               );
             })}

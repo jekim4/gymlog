@@ -23,7 +23,7 @@ export default async function ExerciseSelectPage({
 
   const exercises = await prisma.exercise.findMany({
     orderBy: [{ bodyPart: "asc" }, { name: "asc" }],
-    select: { id: true, name: true, bodyPart: true, brand: true },
+    select: { id: true, name: true, bodyPart: true, brand: true, isSystemDefault: true },
   });
 
   const backHref = sessionId

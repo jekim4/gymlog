@@ -1,5 +1,6 @@
 "use server";
 
+import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { prisma } from "@/lib/prisma";
 import { type BodyPart } from "@/generated/prisma/enums";
@@ -69,4 +70,9 @@ export async function createAndAddExercise(
   } else {
     redirect(`/exercises/select?y=${y}&m=${m}&d=${d}`);
   }
+}
+
+export async function deleteExercise(exerciseId: string) {
+  await prisma.exercise.delete({ where: { id: exerciseId } });
+  revalidatePath("/exercises/select");
 }
