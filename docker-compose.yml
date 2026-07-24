@@ -1,0 +1,14 @@
+services:
+  gymlog:
+    build: ./gym-log
+    ports:
+      - "80:3000"
+    environment:
+      - DATABASE_URL=file:/data/gymlog.db
+      - NODE_ENV=production
+    volumes:
+      - gymlog-data:/data
+    restart: unless-stopped
+
+volumes:
+  gymlog-data:
