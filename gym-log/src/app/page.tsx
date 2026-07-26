@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { getOrCreateSession } from "./actions";
 import { DayDetail, type DayExerciseRow } from "@/components/main/day-detail";
 import { MainActions } from "@/components/main/main-actions";
@@ -106,11 +105,6 @@ export default async function MainPage({
 
         <MainActions addExerciseAction={addExerciseAction} dateQuery={dateQuery} />
 
-        <p className="mt-6 text-center text-xs text-slate-500">
-          <Link href="/dev" className="text-blue-600 hover:underline">
-            개발 대시보드
-          </Link>
-        </p>
       </div>
     </div>
   );
