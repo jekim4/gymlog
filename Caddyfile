@@ -1,0 +1,3 @@
+gymlog-fit.duckdns.org {
+    reverse_proxy gymlog:3000
+}

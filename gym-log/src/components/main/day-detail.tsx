@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { formatHeaderDate } from "@/lib/kst";
 
 export type DayExerciseRow = {
@@ -14,16 +15,31 @@ type DayDetailProps = {
   month: number;
   day: number;
   rows: DayExerciseRow[];
+  sessionHref?: string;
 };
 
-export function DayDetail({ year, month, day, rows }: DayDetailProps) {
+export function DayDetail({ year, month, day, rows, sessionHref }: DayDetailProps) {
   const header = formatHeaderDate(year, month, day);
 
   return (
     <section className="mt-4 rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/80">
-      <h2 className="text-lg font-semibold tracking-tight text-slate-900">
-        {header}
-      </h2>
+      {sessionHref ? (
+        <Link
+          href={sessionHref}
+          className="flex items-center justify-between group"
+        >
+          <span className="text-lg font-semibold tracking-tight text-slate-900 group-hover:text-blue-600">
+            {header}
+          </span>
+          <span className="text-xs font-medium text-blue-500 group-hover:underline">
+            상세보기 →
+          </span>
+        </Link>
+      ) : (
+        <h2 className="text-lg font-semibold tracking-tight text-slate-900">
+          {header}
+        </h2>
+      )}
 
       <ul className="mt-4 divide-y divide-slate-100">
         {rows.length === 0 ? (

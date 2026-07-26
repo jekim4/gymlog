@@ -92,7 +92,17 @@ export default async function MainPage({
           </p>
         ) : null}
 
-        <DayDetail year={y} month={m} day={d} rows={rows} />
+        <DayDetail
+          year={y}
+          month={m}
+          day={d}
+          rows={rows}
+          sessionHref={
+            daySessions.length > 0
+              ? `/sessions/${daySessions[0].id}?y=${y}&m=${m}&d=${d}`
+              : undefined
+          }
+        />
 
         <MainActions addExerciseAction={addExerciseAction} dateQuery={dateQuery} />
 

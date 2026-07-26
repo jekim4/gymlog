@@ -42,14 +42,22 @@ export default async function SessionDetailPage({ params }: PageProps) {
   return (
     <div className="min-h-screen bg-slate-100 pb-10 pt-4 text-slate-900">
       <div className="mx-auto max-w-md px-3">
-        <p className="mb-2 text-center text-xs font-medium text-slate-500">
-          GymLog · 세션 상세
-        </p>
+        {/* 상단 헤더 내비게이션 */}
+        <div className="mb-4 flex items-center gap-3 pl-12">
+          <Link
+            href={backHref}
+            className="flex h-9 w-9 items-center justify-center rounded-lg bg-white text-slate-600 shadow-sm ring-1 ring-slate-200/80 transition hover:bg-slate-50 hover:text-slate-900"
+            aria-label="뒤로가기"
+          >
+            ←
+          </Link>
+          <p className="text-sm font-medium text-slate-500">
+            {formatHeaderDate(y, m, d)}
+          </p>
+        </div>
 
         <section className="rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/80">
-          <p className="text-xs text-slate-500">{formatHeaderDate(y, m, d)}</p>
-
-          <form action={updateAction} className="mt-3 space-y-3">
+          <form action={updateAction} className="space-y-3">
             <div>
               <label
                 htmlFor="title"
