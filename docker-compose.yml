@@ -10,6 +10,14 @@ services:
       - gymlog-data:/data
     restart: unless-stopped
 
+  portfolio:
+    build: ./portfolio
+    expose:
+      - "3000"
+    environment:
+      - NODE_ENV=production
+    restart: unless-stopped
+
   caddy:
     image: caddy:2-alpine
     ports:

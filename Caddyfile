@@ -1,3 +1,11 @@
 gymlog-fit.duckdns.org {
     reverse_proxy gymlog:3000
 }
+
+jieonkimdev.com {
+    reverse_proxy portfolio:3000
+}
+
+www.jieonkimdev.com {
+    redir https://jieonkimdev.com{uri} permanent
+}
